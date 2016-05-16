@@ -3,11 +3,11 @@ MAINTAINER Shane Sveller <shane@bellycard.com>
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update -qq && \
-    apt-get -y install curl runit && \
+    apt-get -y install curl runit unzip && \
     rm -rf /var/lib/apt/lists/*
 
-ENV CT_URL https://github.com/hashicorp/consul-template/archive/v0.14.0.tar.gz
-RUN curl -L $CT_URL | tar -C /usr/local/bin --strip-components 1 -zxf -
+ENV CT_URL https://releases.hashicorp.com/consul-template/0.14.0/consul-template_0.14.0_linux_amd64.zip
+RUN curl -OL $CT_URL && unzip consul-template_0.14.0_linux_amd64.zip && mv consul-template /usr/local/bin
 
 ADD nginx.service /etc/service/nginx/run
 ADD consul-template.service /etc/service/consul-template/run
