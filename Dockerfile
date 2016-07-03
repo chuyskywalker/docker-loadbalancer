@@ -20,13 +20,14 @@ RUN yum install -y nginx \
 
 RUN rm -f /config/supervisor/watcher.ini
 
-COPY consul-template.ini  /config/supervisor/consul-template.ini
-COPY consul.ini           /config/supervisor/consul.ini
-COPY nginx.ini            /config/supervisor/nginx.ini
+#COPY consul.ini           /config/supervisor/consul.ini
+#COPY consul.json          /config/consul.json
 
+COPY consul-template.ini  /config/supervisor/consul-template.ini
 COPY consul-template.hcl  /config/consul-template.hcl
-COPY consul.json          /config/consul.json
+
 COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf.ctmpl
+COPY nginx.ini            /config/supervisor/nginx.ini
 
 # Put this one is bogusly
 COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf
