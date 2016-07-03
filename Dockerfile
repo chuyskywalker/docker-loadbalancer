@@ -1,21 +1,32 @@
-FROM nginx:1.7
-MAINTAINER Shane Sveller <shane@bellycard.com>
+FROM chuyskywalker/centos7-dumbinit-supervisor
 
-RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get update -qq && \
-    apt-get -y install curl runit unzip && \
-    rm -rf /var/lib/apt/lists/*
+COPY nginx.repo /etc/yum.repos.d/
 
-ENV CT_URL https://releases.hashicorp.com/consul-template/0.14.0/consul-template_0.14.0_linux_amd64.zip
-RUN curl -OL $CT_URL && unzip consul-template_0.14.0_linux_amd64.zip && mv consul-template /usr/local/bin
+RUN yum install -y nginx \
+ && yum install -y wget unzip \
+\
+ && wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip \
+ && unzip consul_0.6.4_linux_amd64.zip \
+ && rm -r consul_0.6.4_linux_amd64.zip \
+ && mv consul /usr/bin/consul \
+\
+ && wget https://releases.hashicorp.com/consul-template/0.15.0/consul-template_0.15.0_linux_amd64.zip \
+ && unzip consul-template_0.15.0_linux_amd64.zip \
+ && rm -r consul-template_0.15.0_linux_amd64.zip \
+ && mv consul-template /usr/bin/consul-template \
+\
+ && yum -y history undo last \
+ && rm -rf /var/cache/yum
 
-ADD nginx.service /etc/service/nginx/run
-ADD consul-template.service /etc/service/consul-template/run
+RUN rm -f /config/supervisor/watcher.ini
 
-RUN rm -v /etc/nginx/nginx.conf
-ADD nginx.conf /etc/nginx/nginx.conf
+COPY consul-template.ini  /config/supervisor/consul-template.ini
+COPY consul.ini           /config/supervisor/consul.ini
+COPY nginx.ini            /config/supervisor/nginx.ini
 
-RUN rm -v /etc/nginx/conf.d/*
-ADD app.conf /etc/consul-templates/app.conf
+COPY consul-template.hcl  /config/consul-template.hcl
+COPY consul.json          /config/consul.json
+COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf.ctmpl
 
-CMD ["/usr/bin/runsvdir", "/etc/service"]
+# Put this one is bogusly
+COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf

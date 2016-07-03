@@ -1,0 +1,43 @@
+daemon           off;
+user             root;
+worker_processes 1;
+error_log        /dev/stdout notice;
+pid              /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+
+http {
+  include                 /etc/nginx/mime.types;
+  default_type            application/octet-stream;
+  access_log              /proc/self/fd/1;
+  error_log               /proc/self/fd/1 info;
+  client_max_body_size    50m;
+  keepalive_timeout       5;
+
+
+  {{- range $key, $p := tree "websites/" | byKey }}
+
+  # {{ $key }}: {{ $hostname := key $p.hostname.Path }}{{ $service := key $p.service.Path }}
+  upstream {{ $key }} {
+    keepalive 5;
+    {{- range service $service }}
+    server {{ .Address }};
+    {{- end }}
+  }
+  server {
+    listen 80;
+    server_name {{ $hostname }};
+    location / {
+      proxy_pass http://{{ $key }};
+      proxy_redirect http://{{ $key }}/ /;
+      proxy_set_header X-Forwarded-For $remote_addr;
+      proxy_read_timeout 600;
+    }
+  }
+
+  {{- end }}
+
+}
