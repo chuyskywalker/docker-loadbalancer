@@ -21,8 +21,8 @@ RUN yum install -y nginx iproute \
 RUN rm -f /config/supervisor/watcher.ini
 
 # We don't need to service discover this one, it pushes itself to the router
-#COPY consul.ini           /config/supervisor/consul.ini
-#COPY consul.json          /config/consul.json
+COPY consul.ini           /config/supervisor/consul.ini
+COPY consul.json          /config/consul.json
 
 # Watch for service changes, reconfigure nginx
 COPY consul-template.ini  /config/supervisor/consul-template.ini
@@ -31,7 +31,7 @@ COPY consul-template.hcl  /config/consul-template.hcl
 # Run nginx
 COPY nginx.ini            /config/supervisor/nginx.ini
 COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf.ctmpl
-COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf # even through wrong, it helps to have it here so nginx doesn't totally eat it
+COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf
 
 # Keep your claim on the router, uh, routing!
 COPY claim.ini            /config/supervisor/claim.ini

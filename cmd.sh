@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-/consul lock \
+consul lock \
  -http-addr=192.168.1.51:8500 \
  -http-addr=192.168.1.52:8500 \
  -http-addr=192.168.1.53:8500 \
