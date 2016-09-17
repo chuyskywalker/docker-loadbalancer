@@ -15,29 +15,188 @@ http {
   access_log              /proc/self/fd/1;
   error_log               /proc/self/fd/1 info;
   client_max_body_size    50m;
+  sendfile                off;
   keepalive_timeout       5;
+  gzip_proxied            off;
 
-
-  {{- range $key, $p := tree "websites/" | byKey }}
-
-  # {{ $key }}: {{ $hostname := key $p.hostname.Path }}{{ $service := key $p.service.Path }}
-  upstream {{ $key }} {
-    keepalive 5;
-    {{- range service $service }}
+  # bf2s-forums
+  {{- $service := service "bf2s-forums" }}
+  {{- if $service }}
+  upstream bf2s-forums {
+  {{- range $service }}
     server {{ .Address }};
-    {{- end }}
+  {{- end }}
   }
   server {
-    listen 80;
-    server_name {{ $hostname }};
+    listen 8080;
+    server_name forums.bf2s.com;
     location / {
-      proxy_pass http://{{ $key }};
-      proxy_redirect http://{{ $key }}/ /;
+      proxy_pass       http://bf2s-forums;
       proxy_set_header X-Forwarded-For $remote_addr;
-      proxy_read_timeout 600;
     }
   }
+  {{ else }}
+  # Warning, no healthly 'bf2s-forums' found in service list
+  {{ end }}
 
+  # bf2s
+  {{- $service := service "bf2s" }}
+  {{- if $service }}
+  upstream bf2s {
+  {{- range $service }}
+    server {{ .Address }};
   {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name bf2s.com *.bf2s.com;
+    location / {
+      proxy_pass       http://bf2s;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'bf2s' found in service list
+  {{ end }}
+
+  # bf3s
+  {{- $service := service "bf3s" }}
+  {{- if $service }}
+  upstream bf3s {
+  {{- range $service }}
+    server {{ .Address }};
+  {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name bf3s.com *.bf3s.com;
+    location / {
+      proxy_pass       http://bf3s;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'bf3s' found in service list
+  {{ end }}
+
+  # caseyweekly
+  {{- $service := service "caseyweekly" }}
+  {{- if $service }}
+  upstream caseyweekly {
+  {{- range $service }}
+    server {{ .Address }};
+  {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name caseyweekly.com;
+    location / {
+      proxy_pass       http://caseyweekly;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'caseyweekly' found in service list
+  {{ end }}
+
+  # davidlminard
+  {{- $service := service "davidlminard" }}
+  {{- if $service }}
+  upstream davidlminard {
+  {{- range $service }}
+    server {{ .Address }};
+  {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name davidlminard.com *.davidlminard.com;
+    location / {
+      proxy_pass       http://davidlminard;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'davidlminard' found in service list
+  {{ end }}
+
+  # ihatethisgame
+  {{- $service := service "ihatethisgame" }}
+  {{- if $service }}
+  upstream ihatethisgame {
+  {{- range $service }}
+    server {{ .Address }};
+  {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name ihatethisgame.com *.ihatethisgame.com;
+    location / {
+      proxy_pass       http://ihatethisgame;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'ihatethisgame' found in service list
+  {{ end }}
+
+  # jeffandjeanette
+  {{- $service := service "jeffandjeanette" }}
+  {{- if $service }}
+  upstream jeffandjeanette {
+  {{- range $service }}
+    server {{ .Address }};
+  {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name jeffandjeanette.com *.jeffandjeanette.com;
+    location / {
+      proxy_pass       http://jeffandjeanette;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'jeffandjeanette' found in service list
+  {{ end }}
+
+  # jrmcc
+  {{- $service := service "jrmcc" }}
+  {{- if $service }}
+  upstream jrmcc {
+  {{- range $service }}
+    server {{ .Address }};
+  {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name jrm.cc;
+    location / {
+      proxy_pass       http://jrmcc;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'jrmcc' found in service list
+  {{ end }}
+
+  # steamalerts
+  {{- $service := service "steamalerts" }}
+  {{- if $service }}
+  upstream steamalerts {
+  {{- range $service }}
+    server {{ .Address }};
+  {{- end }}
+  }
+  server {
+    listen 8080;
+    server_name steamalerts.com *.steamalerts.com;
+    location / {
+      proxy_pass       http://steamalerts;
+      proxy_set_header X-Forwarded-For $remote_addr;
+    }
+  }
+  {{ else }}
+  # Warning, no healthly 'steamalerts' found in service list
+  {{ end }}
 
 }

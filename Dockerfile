@@ -20,14 +20,20 @@ RUN yum install -y nginx \
 
 RUN rm -f /config/supervisor/watcher.ini
 
+# We don't need to service discover this one, it pushes itself to the router
 #COPY consul.ini           /config/supervisor/consul.ini
 #COPY consul.json          /config/consul.json
 
+# Watch for service changes, reconfigure nginx
 COPY consul-template.ini  /config/supervisor/consul-template.ini
 COPY consul-template.hcl  /config/consul-template.hcl
 
-COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf.ctmpl
+# Run nginx
 COPY nginx.ini            /config/supervisor/nginx.ini
+COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf.ctmpl
+COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf # even through wrong, it helps to have it here so nginx doesn't totally eat it
 
-# Put this one is bogusly
-COPY nginx.conf.ctmpl     /etc/nginx/nginx.conf
+# Keep your claim on the router, uh, routing!
+COPY claim.ini            /config/supervisor/claim.ini
+COPY claim.sh             /claim.sh
+COPY cmd.sh               /cmd.sh
