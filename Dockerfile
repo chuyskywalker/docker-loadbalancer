@@ -2,7 +2,7 @@ FROM chuyskywalker/centos7-dumbinit-supervisor
 
 COPY nginx.repo /etc/yum.repos.d/
 
-RUN yum install -y nginx \
+RUN yum install -y nginx iproute \
  && yum install -y wget unzip \
 \
  && wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip \

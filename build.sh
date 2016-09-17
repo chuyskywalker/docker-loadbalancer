@@ -19,6 +19,7 @@ docker push $CNAME
 echo "-- Refresh Nomad Deployment"
 cp nomad.hcl /tmp/nomad.hcl
 sed -i -e "s#registry.service.consul/loadbalancer#$CNAME#" /tmp/nomad.hcl
+sed -i -e "s#{password}/$1" /tmp/nomad.hcl
 docker cp /tmp/nomad.hcl nomad:/tmp/nomad.hcl
 docker exec -ti nomad nomad run -address=http://192.168.1.51:4646 /tmp/nomad.hcl
 

@@ -28,7 +28,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name forums.bf2s.com;
     location / {
       proxy_pass       http://bf2s-forums;
@@ -48,7 +48,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name bf2s.com *.bf2s.com;
     location / {
       proxy_pass       http://bf2s;
@@ -68,7 +68,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name bf3s.com *.bf3s.com;
     location / {
       proxy_pass       http://bf3s;
@@ -88,7 +88,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name caseyweekly.com;
     location / {
       proxy_pass       http://caseyweekly;
@@ -108,7 +108,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name davidlminard.com *.davidlminard.com;
     location / {
       proxy_pass       http://davidlminard;
@@ -128,7 +128,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name ihatethisgame.com *.ihatethisgame.com;
     location / {
       proxy_pass       http://ihatethisgame;
@@ -148,7 +148,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name jeffandjeanette.com *.jeffandjeanette.com;
     location / {
       proxy_pass       http://jeffandjeanette;
@@ -168,7 +168,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name jrm.cc;
     location / {
       proxy_pass       http://jrmcc;
@@ -188,7 +188,7 @@ http {
   {{- end }}
   }
   server {
-    listen 8080;
+    listen 80;
     server_name steamalerts.com *.steamalerts.com;
     location / {
       proxy_pass       http://steamalerts;
