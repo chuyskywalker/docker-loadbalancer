@@ -2,7 +2,7 @@ daemon           off;
 user             root;
 worker_processes 1;
 error_log        /dev/stdout notice;
-pid              /var/run/nginx.pid;
+pid              /local/nginx.pid;
 
 events {
     worker_connections 1024;
