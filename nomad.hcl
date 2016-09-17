@@ -9,19 +9,12 @@ job "loadbalancer" {
             driver = "docker"
             config {
                 image = "registry.service.consul/loadbalancer"
-                network_mode = "host"
             }
             env {
                 PASSWORD = "{password}"
             }
             resources {
                 memory = 256
-                network {
-                    mbits = 1
-                    port "web" {
-                        static = 80
-                    }
-                }
             }
         }
     }
