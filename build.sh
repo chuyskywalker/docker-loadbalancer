@@ -16,6 +16,9 @@ docker build -t $CNAME .
 echo "-- Push to registry"
 docker push $CNAME
 
+echo "-- Short pause..."
+sleep 5
+
 echo "-- Refresh Nomad Deployment"
 cp nomad.hcl /tmp/nomad.hcl
 sed -i -e "s#registry.service.consul/loadbalancer#$CNAME#" /tmp/nomad.hcl
